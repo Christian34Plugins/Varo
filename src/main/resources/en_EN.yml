@@ -1,0 +1,41 @@
+prefix-color: "§b"
+join-message: "§7》§8%player_name% §7joined the game"
+quit-message: "§7《§8%player_name% §7left the game"
+scoreboard:
+  header: "§7§l》 §f§lVARO §7§l《"
+  content:
+        - "%empty%"
+        - "§fPlayers online§7:"
+        - "§a%server_online%§7/%server_max_players%"
+        - "%empty%"
+        - "§fTeam§7:"
+        - "§b%team%"
+        - "%empty%"
+        - "§fPing§7:"
+        - "§a%player_ping%"
+chat: "§8%player_name%§7》 %msg%"
+chat-team: "§7[%team%§7] §8%player_name%§7》 %msg%"
+tp-lobby: "§aYou were teleported to the lobby!"
+set-lobby: "§aLobby has been set!"
+set-lobby-error: "§cYou can not set the Lobby in this world!"
+build-on: "You can build now!"
+build-off: "You are no longer in build mode!"
+menu:
+  exit: "§7§l》§c§lCancel"
+  last: "§7§l》§c§lBack"
+  lobby: "§bLobby"
+  settings: "§aSettings"
+  info: "§6Information"
+  setup: "Setup"
+  players: "§3Players"
+  players-per-team: "§3Players per Team"
+setup:
+  save: "§7Do you want to save §5%value%§7?"
+  cancel: "Setup was stopped!"
+btn:
+  click-me: "§r§e§lClick me"
+  hover: "§5Click me"
+  yes: "§a[YES]"
+  change: "§c[CHANGE]"
+
+

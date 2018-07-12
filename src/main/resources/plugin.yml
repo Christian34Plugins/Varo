@@ -1,0 +1,25 @@
+name: Varo
+version: 1.0.0
+author: Christian34
+main: com.Christian34.varo.Varo
+softdepend: [PlaceholderAPI]
+commands:
+    varo:
+      description: All Commands
+      default: true
+    start:
+      description: Starts the game
+      default: false
+    build:
+      description: Builder
+      default: false
+    lobby:
+      description: All Lobby Commands
+      default: true
+    ping:
+      description: Ping
+      default: true
+    lastseen:
+      description: last seen
+      default: true
+    team:

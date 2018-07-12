@@ -1,0 +1,42 @@
+prefix-color: "§b"
+join-message: "§7》§8%player_name% §7hat das Spiel betreten"
+quit-message: "§7《§8%player_name% §7hat das Spiel verlassen"
+scoreboard:
+  header: "§7§l》 §f§lVARO §7§l《"
+  content:
+        - "%empty%"
+        - "§fSpieler online§7:"
+        - "§a%server_online%§7/%server_max_players%"
+        - "%empty%"
+        - "§fTeam§7:"
+        - "§b%team%"
+        - "%empty%"
+        - "§fPing§7:"
+        - "§a%player_ping%"
+chat: "§8%player_name%§7》 %msg%"
+chat-team: "§7[%team%§7] §8%player_name%§7》 %msg%"
+tp-lobby: "§aDu wurdest in die Lobby teleportiert!"
+set-lobby: "§aLobby wurde gesetzt!"
+set-lobby-error: "§cDu kannst nicht in dieser Welt die Lobby platzieren!"
+build-on: "Du kannst nun bauen!"
+build-off: "Du kannst nun nicht mehr bauen!"
+menu:
+  exit: "§7§l》§c§lBeenden"
+  last: "§7§l》§c§lZurück"
+  lobby: "§bLobby"
+  settings: "§aAllgemeine Einstellungen"
+  info: "§6Informationen"
+  setup: "Setup"
+  players: "§3Spieler"
+  players-per-team: "§3Spieler pro Team"
+setup:
+  save: "§7Möchtest du §5%value% §7speichern?"
+  cancel: "Setup wurde abgebrochen!"
+btn:
+  click-me: "§r§e§lKlick mich"
+  hover: "§5Klick mich"
+  yes: "§a[JA]"
+  change: "§c[ÄNDERN]"
+ping-msg: "§7Du hast einen Ping von §e%player_ping% ms§7!"
+
+
