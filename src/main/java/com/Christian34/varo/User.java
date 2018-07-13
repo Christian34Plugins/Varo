@@ -10,6 +10,7 @@ import com.Christian34.varo.Chat.ChatManager;
 import com.Christian34.varo.Chat.ChatType;
 import com.Christian34.varo.Files.File_Config;
 import com.Christian34.varo.Files.File_PlayerData;
+import com.Christian34.varo.Files.File_Teams;
 import com.Christian34.varo.Lobby.Lobby;
 import com.Christian34.varo.PlayerStates.PlayerStateManager;
 import com.Christian34.varo.Team.Team;
@@ -23,6 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class User {
@@ -147,6 +149,29 @@ public class User {
 
     public Team getTeam() {
         return (team.getName().equals("none") ? null : team);
+    }
+
+    public void joinTeam(String team) {
+        if (Team.isTeam(team)) {
+            if (getTeam() == null || (!getTeam().getName().equalsIgnoreCase(team))) {
+                if (File_Teams.data.getStringList("teams." + team + " .members").size() < File_Config.data.getInt("config.game.players-per-team")) {
+                    if (getTeam() != null) {
+                        getTeam().leaveTeam();
+                    }
+                    List<String> list = File_Teams.data.getStringList("teams." + team + ".members");
+                    list.add(player.getName());
+                    File_Teams.data.set("teams." + team + ".members", list);
+                    File_Teams.save();
+                    player.sendMessage(Chat.getPrefix() + "§aDu bist dem Team erfolgreich beigetreten!");
+                } else {
+                    player.sendMessage(Chat.getPrefix() + "§cTeam ist voll!");
+                }
+            } else {
+                player.sendMessage(Chat.getPrefix() + "§cDu bist bereits in diesem Team!");
+            }
+        } else {
+            player.sendMessage(Chat.getPrefix() + "§cTeam wurde nicht gefunden!");
+        }
     }
 
 }

@@ -3,7 +3,7 @@ package com.Christian34.varo;
 import com.Christian34.varo.Files.FileManager;
 import com.Christian34.varo.Files.File_Config;
 import com.Christian34.varo.Team.Team;
-import com.Christian34.varo.Team.TeamListener;
+import com.Christian34.varo.Team.TeamSetup;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,7 +16,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Inventory implements Listener {
 
@@ -55,10 +54,6 @@ public class Inventory implements Listener {
         inv.setContents(contents);
     }
 
-    public ItemStack[] getContents() {
-        return contents;
-    }
-
     public void setPlaceholder(int line, Material material, int data) {
         ItemStack placeholder = new ItemStack(material, 1, (byte) data);
         int counter = 0;
@@ -75,54 +70,32 @@ public class Inventory implements Listener {
         return inv;
     }
 
+    @Deprecated
     public static void getTeamsList(Player p, Boolean getNextPage, Boolean getPrevPage) {
-        org.bukkit.inventory.Inventory inv = Bukkit.createInventory(null, 54, "§7§l》§eTeams");
+        Inventory invTeamList = new Inventory(6, "§7§l》§eTeams");
+        invTeamList.setPlaceholder(1, Material.STAINED_GLASS_PANE, 15);
+        Integer[] placeholder = {1, 7, 10, 16, 19, 25, 28, 34, 37, 43, 46, 52};
+        for (int i : placeholder) {
+            invTeamList.setContent(Material.STAINED_GLASS_PANE, "§0", null, 0, i, p);
+        }
         User user = new User(p);
-        ItemStack[] contents = inv.getContents();
-        ItemMeta meta = new ItemStack(Material.SKULL).getItemMeta();
 
-        ItemStack create = new ItemStack(Material.MAGMA_CREAM);
-        ItemMeta metaEdit = create.getItemMeta();
-
-        if (TeamListener.isSetup.get(p.getName()) != null && TeamListener.isSetup.get(p.getName())) {
-            metaEdit.setDisplayName("§7§l》§c§lTeam erstellen");
+        if (TeamSetup.isSetup.get(p.getName()) != null && TeamSetup.isSetup.get(p.getName())) {
             ArrayList<String> lore = new ArrayList<>();
             lore.add("§5Du bist bereits im Setup");
-            metaEdit.setLore(lore);
-            create.setItemMeta(metaEdit);
-            contents[49] = create;
-        } else if (user.getTeam().equals("none")) {
-            metaEdit.setDisplayName("§7§l》§a§lTeam erstellen");
-            create.setItemMeta(metaEdit);
-            contents[49] = create;
+            invTeamList.setContent(Material.MAGMA_CREAM, "§7§l》§c§lTeam erstellen", lore, 0, 49, p);
+        } else if (user.getTeam() == null) {
+            invTeamList.setContent(Material.MAGMA_CREAM, "§7§l》§a§lTeam erstellen", null, 0, 49, p);
         }
-
-        inv.setContents(contents(meta, contents, inv));
 
         ArrayList<String> teamsList = new ArrayList<>();
         for (String currentTeam : FileManager.getTeams().getStringList("teams.list")) {
             teamsList.add(FileManager.getTeams().getString("teams." + currentTeam + ".name"));
         }
-        ItemStack prevPageItem = new ItemStack(Material.ARROW, 1);
-        meta = prevPageItem.getItemMeta();
-        meta.setDisplayName("§ePrevious Page");
-        prevPageItem.setItemMeta(meta);
-        contents[48] = prevPageItem;
 
-        if (!user.getTeam().equals("none")) {
-            ItemStack leaveTeam = new ItemStack(Material.BARRIER, 1);
-            meta = leaveTeam.getItemMeta();
-            meta.setDisplayName("§cTeam verlassen");
-            leaveTeam.setItemMeta(meta);
-            contents[49] = leaveTeam;
+        if (!(user.getTeam() == null)) {
+            invTeamList.setContent(Material.BARRIER, "§cTeam verlassen", null, 0, 49, p);
         }
-
-        ItemStack nPage = new ItemStack(Material.ARROW, 1);
-        meta = nPage.getItemMeta();
-        meta.setDisplayName("§eNext Page");
-        nPage.setItemMeta(meta);
-        contents[50] = nPage;
-        inv.setContents(contents);
 
         if (getPrevPage && latestPage.get(p.getName()) == 2) {
             getPrevPage = false;
@@ -135,64 +108,47 @@ public class Inventory implements Listener {
             int max = (teamsList.size() < PAGE[x + 1]) ? teamsList.size() : PAGE[x + 1];
             for (int i = PAGE[x]; i < max; i++) {
                 String currentTeam = FileManager.getTeams().getString("teams." + teamsList.get(i) + ".name");
-                ItemStack teamItem = new ItemStack(Material.PAPER, 1);
-                meta = teamItem.getItemMeta();
-                meta.setDisplayName("§5§l" + currentTeam);
-                List<String> lore = getLore(currentTeam);
-                meta.setLore(lore);
-                teamItem.setItemMeta(meta);
-                contents[SLOTS[i - PAGE[x]]] = teamItem;
+                invTeamList.setContent(Material.PAPER, "§5§l" + currentTeam, getLore(currentTeam), 0, SLOTS[i - PAGE[x]], p);
             }
-            if (teamsList.size() <= PAGE[x + 1] || latestPage.get(p.getName()) == 15) {
-                contents[50] = null;
+            if (!(teamsList.size() <= PAGE[x + 1] || latestPage.get(p.getName()) == 15)) {
+                invTeamList.setContent(Material.ARROW, "§eNext Page", null, 0, 50, p);
             }
-            inv.setContents(contents);
         } else if (getPrevPage) {
             int x = latestPage.get(p.getName());
-            x--;
-            latestPage.put(p.getName(), x);
+
 
             int max = (teamsList.size() < PAGE[x + 1]) ? teamsList.size() : PAGE[x + 1];
             for (int i = PAGE[x]; i < max; i++) {
                 String currentTeam = FileManager.getTeams().getString("teams." + teamsList.get(i) + ".name");
-                ItemStack teamItem = new ItemStack(Material.PAPER, 1);
-                meta = teamItem.getItemMeta();
-                meta.setDisplayName("§5§l" + currentTeam);
-                List<String> lore = getLore(currentTeam);
-                meta.setLore(lore);
-                teamItem.setItemMeta(meta);
-                contents[SLOTS[i - PAGE[x]]] = teamItem;
+                invTeamList.setContent(Material.PAPER, "§5§l" + currentTeam, getLore(currentTeam), 0, SLOTS[i - PAGE[x]], p);
             }
-            inv.setContents(contents);
+            x--;
+            latestPage.put(p.getName(), x);
         } else {
             latestPage.put(p.getName(), 1);
             for (int i = 0; i < teamsList.size(); i++) {
                 String currentTeam = FileManager.getTeams().getString("teams." + teamsList.get(i) + ".name");
                 if (i < SLOTS.length) {
-                    ItemStack teamItem = new ItemStack(Material.PAPER, 1);
-                    meta = teamItem.getItemMeta();
-                    List<String> lore = getLore(currentTeam);
-                    meta.setLore(lore);
-                    meta.setDisplayName("§5§l" + currentTeam);
-                    teamItem.setItemMeta(meta);
-                    contents[SLOTS[i]] = teamItem;
+                    invTeamList.setContent(Material.PAPER, "§5§l" + currentTeam, getLore(currentTeam), 0, SLOTS[i], p);
                 }
             }
-            if (teamsList.size() <= 20) {
-                contents[50] = null;
-            }
-            contents[48] = null;
-            inv.setContents(contents);
         }
-        p.openInventory(inv);
+        if (!(teamsList.size() <= 20)) {
+            invTeamList.setContent(Material.ARROW, "§eNext Page", null, 0, 50, p);
+        }
+        if (latestPage.get(p.getName()) > 1) {
+            invTeamList.setContent(Material.ARROW, "§ePrevious Page", null, 0, 48, p);
+        }
+        p.openInventory(invTeamList.getInventory());
     }
 
+    @Deprecated
     public static void getTeamsInv(Player player) {
         org.bukkit.inventory.Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§7§l》§eTeams");
         ItemStack[] contents = inv.getContents();
         ItemStack create = new ItemStack(Material.MAGMA_CREAM);
         ItemMeta metaEdit = create.getItemMeta();
-        if (TeamListener.isSetup.get(player.getName()) != null && TeamListener.isSetup.get(player.getName())) {
+        if (TeamSetup.isSetup.get(player.getName()) != null && TeamSetup.isSetup.get(player.getName())) {
             metaEdit.setDisplayName("§7§l》§c§lTeam erstellen");
             ArrayList<String> lore = new ArrayList<>();
             lore.add("§5Du bist bereits im Setup");
@@ -212,6 +168,7 @@ public class Inventory implements Listener {
         player.openInventory(inv);
     }
 
+    @Deprecated
     public static void invPlayerList(Player p) {
         Player headName;
         org.bukkit.inventory.Inventory players = Bukkit.createInventory(null, 54, "§7§l》§eSpieler");
@@ -238,6 +195,7 @@ public class Inventory implements Listener {
         p.openInventory(players);
     }
 
+    @Deprecated
     private static ItemStack[] contents(ItemMeta meta, ItemStack[] contents, org.bukkit.inventory.Inventory inv) {
         for (int x : WHITE_GLASS) {
             ItemStack item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 0);
@@ -260,8 +218,9 @@ public class Inventory implements Listener {
         return contents;
     }
 
-    private static List<String> getLore(String currentTeam) {
-        List<String> lore = new ArrayList<>();
+    @Deprecated
+    private static ArrayList<String> getLore(String currentTeam) {
+        ArrayList<String> lore = new ArrayList<>();
         Team team = new Team(currentTeam);
         lore.add("§7§l》§aLeader: §r§7" + team.getLeader());
         lore.add("§7§l》§aMembers: §r§7" + team.getTeamMembers().size() + "§7/" + File_Config.data.getInt("config.game.players-per-team"));

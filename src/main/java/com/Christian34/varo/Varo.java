@@ -11,7 +11,7 @@ import com.Christian34.varo.Chat.Chat;
 import com.Christian34.varo.Inventorys.*;
 import com.Christian34.varo.PlayerStates.PlayerStateManager;
 import com.Christian34.varo.Lobby.*;
-import com.Christian34.varo.Team.TeamListener;
+import com.Christian34.varo.Team.TeamSetup;
 import com.Christian34.varo.Commands.*;
 import com.Christian34.varo.Events.*;
 import com.Christian34.varo.Modules.*;
@@ -74,7 +74,7 @@ public class Varo extends JavaPlugin implements Listener {
             getServer().getPluginManager().registerEvents(new Scoreboard(), this);
             getServer().getPluginManager().registerEvents(new InvClickEvent(), this);
             getServer().getPluginManager().registerEvents(new Backpack(), this);
-            getServer().getPluginManager().registerEvents(new TeamListener(), this);
+            getServer().getPluginManager().registerEvents(new TeamSetup(), this);
             getServer().getPluginManager().registerEvents(new ToxicRain(), this);
             getServer().getPluginManager().registerEvents(new Setup(), this);
             getServer().getPluginManager().registerEvents(new GravityGrenade(), this);

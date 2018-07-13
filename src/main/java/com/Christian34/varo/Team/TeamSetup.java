@@ -6,20 +6,24 @@
 package com.Christian34.varo.Team;
 
 import com.Christian34.varo.Chat.Chat;
+import com.Christian34.varo.Files.File_Teams;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class TeamListener implements Listener {
+public class TeamSetup implements Listener {
 
     public static ConcurrentHashMap<String, Boolean> isSetup = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<String, Integer> setup = new ConcurrentHashMap<>();
@@ -65,9 +69,7 @@ public class TeamListener implements Listener {
      */
     public void saveData(Player player, Integer key, String toSave) {
         ConcurrentHashMap<Integer, String> data2 = data.get(player.getName());
-        if (data2 == null) {
-            data2 = new ConcurrentHashMap<>();
-        }
+        if (data2 == null) data2 = new ConcurrentHashMap<>();
         data2.put(key, toSave);
         data.put(player.getName(), data2);
     }
@@ -85,5 +87,26 @@ public class TeamListener implements Listener {
             return "none";
         }
     }
+
+    @EventHandler(ignoreCancelled = true)
+    public void invClick(InventoryClickEvent e) {
+        Player p = (Player) e.getWhoClicked();
+        if (e.getClickedInventory() != null && e.getClickedInventory().getName() != null && e.getCurrentItem() != null) {
+            if (e.getInventory().getName().equalsIgnoreCase("§7§l》§5Wähle eine Farbe aus")) {
+                if (e.getCurrentItem().getType() == Material.WOOL) {
+                    int durability = e.getCurrentItem().getDurability();
+                            /*
+                              FIX: null
+                             */
+                    saveData(p, 2, wool[durability].toString());
+                    TeamSetup.setup.put(p.getName(), 4);
+                    p.closeInventory();
+                    Bukkit.dispatchCommand(p, "team create");
+                }
+            }
+        }
+    }
+
+
 
 }

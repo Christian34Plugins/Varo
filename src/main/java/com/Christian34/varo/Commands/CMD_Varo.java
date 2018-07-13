@@ -1,5 +1,6 @@
 package com.Christian34.varo.Commands;
 
+import com.Christian34.varo.Inventory;
 import com.Christian34.varo.User;
 import com.Christian34.varo.Varo;
 import com.Christian34.varo.Setup;
@@ -28,8 +29,8 @@ public class CMD_Varo implements CommandExecutor {
                     user.sendMessage("all commands");
                 } else if (args[0].equalsIgnoreCase("gamestate")) {
                     user.sendMessage(Varo.getGameStateManager().getCurrentGameState().toString());
-                } else if (args[0].equalsIgnoreCase("toworld")) {
-                    p.teleport(Bukkit.getWorld("world").getSpawnLocation());
+                } else if (args[0].equalsIgnoreCase("test")) {
+                    Inventory.getTeamsList(p, false, false);
                 } else {
                     Bukkit.dispatchCommand(p, "varo help");
                 }
