@@ -5,10 +5,8 @@
 
 package com.Christian34.varo.Inventorys;
 
-import com.Christian34.varo.Chat.Chat;
 import com.Christian34.varo.Files.FileManager;
 import com.Christian34.varo.GameStates.StartState;
-import com.Christian34.varo.Team.TeamSetup;
 import com.Christian34.varo.User;
 import com.Christian34.varo.Varo;
 import org.bukkit.Bukkit;
@@ -58,7 +56,6 @@ public class InventoryTeams implements Listener {
                         p.closeInventory();
                         Bukkit.dispatchCommand(p, "team leave");
                     } else {
-                        Chat.broadcast("EVENT!");
                         String name = e.getCurrentItem().getItemMeta().getDisplayName();
                         for (int i = 0; i < name.length(); i++) {
                             if (name.charAt(i) == '§') {

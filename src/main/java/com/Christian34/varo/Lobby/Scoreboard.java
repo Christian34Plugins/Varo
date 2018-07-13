@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2018.
+ * created by Christian34
+ */
+
 package com.Christian34.varo.Lobby;
 
 import java.util.List;
